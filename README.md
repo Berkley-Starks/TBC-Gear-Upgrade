@@ -76,14 +76,7 @@ Example URLs once deployed:
    The `title` becomes the page `<h1>`. All other keys become the metadata strip under it. If you include `title`, don't also write a `# Heading` at the top of the body — the generator will strip one for you, but it's tidier not to duplicate.
 
 3. Write the body in regular markdown. Tables, lists, code fences, blockquotes all work.
-4. Run:
-
-   ```bash
-   pip install markdown              # one time
-   python generate.py
-   ```
-
-5. Commit and push:
+4. Commit and push:
 
    ```bash
    git add .
@@ -91,25 +84,39 @@ Example URLs once deployed:
    git push
    ```
 
-   GitHub Pages redeploys automatically.
+   The included GitHub Actions workflow at `.github/workflows/pages.yml` automatically rebuilds the site and commits the generated HTML back. No need to run the generator locally — though you can if you want to preview.
+
+## Running the generator manually (optional)
+
+If you want to preview before pushing, or want to skip the Actions workflow:
+
+```bash
+pip install markdown              # one time
+python generate.py                # regenerates all HTML from reports/
+python -m http.server 8000        # preview at http://localhost:8000
+```
 
 ---
 
 ## Markdown conventions for audits
 
-### WoW item quality coloring
+### WoW item quality coloring + Wowhead links
 
-Wrap item/enchant names in quality tags so they render in the right color:
+Wrap item/enchant names in quality tags so they render in the right color. Add a numeric ID after the colon to link to Wowhead (with hover tooltips):
 
 ```markdown
-[epic]Spiteblade[/epic]                  → purple
-[rare]Sun-Gilded Shouldercaps[/rare]     → blue
-[uncommon]Fel Leather Boots[/uncommon]   → green
-[common]Instant Poison VII[/common]      → white
+[epic:28729]Spiteblade[/epic]              → purple, linked to wowhead.com/tbc/item=28729
+[rare:27995]Sun-Gilded Shouldercaps[/rare] → blue, linked
+[enchant:27984]Mongoose[/enchant]          → green mono, linked to spell=27984
+[uncommon]Fel Leather Boots[/uncommon]     → green, no link (no ID given)
+[common]Instant Poison VII[/common]        → white, no link
 [legendary]Warglaive of Azzinoth[/legendary] → orange
-[artifact]Thunderfury[/artifact]         → beige
-[enchant]Enchant Gloves — Superior Agility[/enchant] → enchant green (mono)
+[artifact]Thunderfury[/artifact]           → beige
 ```
+
+All quality tags default to item lookups. The `[enchant]` tag defaults to spell lookups (enchants are spells in WoW's data model). Hovering any linked item on the live page shows Wowhead's tooltip card; clicking opens Wowhead in a new tab.
+
+Dropping the `:ID` is always safe — the item renders as a colored span without a link. Useful when you don't know the ID offhand.
 
 ### Task lists
 

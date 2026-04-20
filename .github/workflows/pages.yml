@@ -1,0 +1,49 @@
+name: Build site
+
+# Auto-rebuilds the site whenever you change a markdown report, the generator,
+# or the stylesheet. Commits the regenerated HTML back to main so GitHub Pages
+# serves fresh content. You still CAN run `python3 generate.py` locally and
+# push the HTML yourself — that just works too. This removes the need to.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reports/**'
+      - 'generate.py'
+      - 'assets/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install markdown
+
+      - name: Generate site
+        run: python3 generate.py
+
+      - name: Commit regenerated HTML (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "rebuild site [skip ci]"
+            git push
+          fi

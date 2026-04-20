@@ -355,8 +355,16 @@ def _rel_root_from(depth: int) -> str:
     return "../" * depth if depth > 0 else "./"
 
 
+def _css_version() -> str:
+    """Short cache-busting suffix derived from styles.css mtime (or 0 if missing)."""
+    css = ASSETS_DIR / "styles.css"
+    if css.exists():
+        return str(int(css.stat().st_mtime))
+    return "0"
+
+
 def _rel_css(depth: int) -> str:
-    return _rel_root_from(depth) + "assets/styles.css"
+    return f"{_rel_root_from(depth)}assets/styles.css?v={_css_version()}"
 
 
 # --------------------------------------------------------------------------- #
