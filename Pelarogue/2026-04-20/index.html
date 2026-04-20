@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pelarogue — 2026-04-20</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/styles.css">
+<meta name="color-scheme" content="dark">
+</head>
+<body>
+<div class="shell">
+<header class="mast">
+  <a class="mast-brand" href="../../index.html">Pel's Raid Audit <em>codex</em></a>
+  <nav class="mast-nav"><a href="../../index.html">all characters</a><span class="crumb-sep">/</span><a href="../index.html">pelarogue</a><span class="crumb-sep">/</span><span>2026-04-20</span></nav>
+</header>
+<header class="report-head"><h1>Weekly Pre-Raid Gear Audit</h1><dl class="report-meta"><dt>character</dt><dd class="val-pelarogue">Pelarogue</dd><dt>realm</dt><dd class="val-dreamscythe-us">Dreamscythe-US</dd><dt>spec</dt><dd class="val-combat">Combat 20/41/0 (Sword)</dd><dt>faction</dt><dd class="val-scryer">Scryer</dd><dt>professions</dt><dd class="val-enchanting">Enchanting</dd></dl></header><h2>Headline finding: spec / weapon mismatch</h2>
+<p><strong>Malchazeen is a dagger</strong>, but your talents are <strong>Sword Specialization</strong> (20/41/0). This is the single biggest DPS loss on the sheet.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>You are losing</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sword Specialization 5/5 (5% chance extra attack)</td>
+<td>Procs on swords only</td>
+</tr>
+<tr>
+<td>Weapon Expertise 2/2 (+5 MH expertise)</td>
+<td>Swords / fists only — daggers excluded</td>
+</tr>
+<tr>
+<td>Human sword racial (+5 MH expertise)</td>
+<td>Swords / maces only</td>
+</tr>
+</tbody>
+</table></div>
+<p>Net: roughly ~10 wasted MH expertise + zero Sword Spec procs. The cap table confirms it — MH expertise sits at 10/25 while OH (King's Defender, a sword) is 15/20. Estimated loss is <strong>8–12% DPS</strong> depending on armor and buff state. Everything else on this audit is secondary to fixing the MH.</p>
+<h3>MH acquisition priority (swords, in order of reliability)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Weapon</th>
+<th>Source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><span class="q-epic">Latro's Shifting Sword</span></td>
+<td>Aeonus, Heroic Black Morass (BoP)</td>
+<td>Most reliable path — run HBM weekly with Keepers of Time rep. 1.80s speed (fast for MH, but fine). This is your interim MH until Spiteblade lands.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="q-epic">Blinkstrike</span></td>
+<td>AH (BoE world drop)</td>
+<td>If gold permits and it's posted. Chance-on-hit extra attack proc is strong.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="q-epic">Spiteblade</span></td>
+<td>Netherspite, Karazhan</td>
+<td>Weekly lockout, ~12% drop. Prio this on your Kara loot sheet — best PvE MH sword in P1.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="q-epic">Hope Ender</span></td>
+<td>Doom Lord Kazzak world boss (BoE)</td>
+<td>Backup if your guild runs Kazzak or one appears on the AH.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="admonition admonition-note"><div class="admonition-title">note</div><p>All P1 sword MH options sit within ~9 DPS of each other. Grab whichever you can get fastest — don't wait for Spiteblade specifically.</p>
+<p><strong>Mongoose migration:</strong> when you swap MH, the Mongoose on Malchazeen is gone. Budget mats for a fresh Mongoose on the replacement (2x Large Prismatic Shard, 10 Greater Planar Essence, 2 Primal Mana, 1 Primal Life — all self-enchant).</p></div>
+
+<p>Vindicator's Brand dropped from the list — it's Aldor Exalted only.</p>
+<hr>
+<h2>Critical findings (pipeline-flagged)</h2>
+<h3>No poisons on either weapon</h3>
+<ul>
+<li><strong>In a Windfury group (Tuesday default):</strong> bare MH, <span class="q-common">Instant Poison VII</span> on OH. Windfury is a temp enchant and blocks poisons on the weapon it lands on.</li>
+<li><strong>Not in a WF group:</strong> <span class="q-common">Instant Poison VII</span> on both weapons.</li>
+<li>Confirm group assignment with the raid lead each week.</li>
+</ul>
+<h3>Waist: 2/2 empty sockets (Gronn-Stitched Girdle)</h3>
+<p>Both sockets should take <span class="q-rare">Delicate Crimson Spinel</span> (+10 Agi each). Ignore socket bonuses on this belt — +20 Agi raw beats any +Hit/+Sta bonus you'd get for matching colors. Nets roughly +20 AP + ~0.9% crit.</p>
+<h3>Feet: no enchant (Zierhut's Lost Treads)</h3>
+<p>Apply <span class="q-enchant">Enchant Boots — Dexterity</span> (+12 Agi). If you ever switch to a Swift Skyfire / speed meta setup, Cat's Swiftness (+6 Agi, +8% speed) becomes an option, but Dexterity is the pure-DPS pick.</p>
+<h3>Chest: leveling-era <code>+15 Health</code> enchant</h3>
+<p>Replace with <span class="q-enchant">Enchant Chest — Exceptional Stats</span> (+6 all stats). Nets ~+6 Agi + AP/Hit/Crit scaling from rogue talents. Self-apply.</p>
+<hr>
+<h2>Suboptimal enchants (replace when affordable)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Current</th>
+<th>Replace with</th>
+<th>Net gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shoulders</td>
+<td>+13 crit (leveling-tier inscription)</td>
+<td><span class="q-enchant">Greater Inscription of the Blade</span> (Scryer, +15 crit, +20 AP) — requires Exalted with Scryers, buy from Scryer Quartermaster</td>
+<td>+20 AP, +2 crit rating</td>
+</tr>
+<tr>
+<td>Wrist</td>
+<td><code>+12 Strength</code> (id 2647)</td>
+<td><span class="q-enchant">Enchant Bracer — Assault</span> (+24 AP)</td>
+<td>+12 AP</td>
+</tr>
+<tr>
+<td>Hands</td>
+<td><code>+15 Strength</code> (id 684)</td>
+<td><span class="q-enchant">Enchant Gloves — Superior Agility</span> (+15 Agi)</td>
+<td>~+0.6% crit + similar AP</td>
+</tr>
+<tr>
+<td>Ring 1</td>
+<td><em>none</em></td>
+<td><span class="q-enchant">Enchant Ring — Stats</span> (+4 all, enchanter-only)</td>
+<td>~+8 AP, ~+0.18% crit, stam, dodge</td>
+</tr>
+<tr>
+<td>Ring 2</td>
+<td><em>none</em></td>
+<td><span class="q-enchant">Enchant Ring — Stats</span> (+4 all, enchanter-only)</td>
+<td>~+8 AP, ~+0.18% crit, stam, dodge</td>
+</tr>
+</tbody>
+</table></div>
+<p>Skip <code>Enchant Ring — Striking</code> on rings — that's a Combat Dagger / Mutilate pick. Stats wins for sword-spec Combat.</p>
+<hr>
+<h2>Top 5 gear upgrades (impact × ease)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Slot</th>
+<th>Current</th>
+<th>Upgrade</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>MH</strong></td>
+<td><span class="q-epic">Malchazeen</span> (dagger)</td>
+<td>Any P1 sword (see acquisition table above)</td>
+<td>HBM / AH / Kara / Kazzak</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Shoulders</strong></td>
+<td><span class="q-rare">Sun-Gilded Shouldercaps</span> (iLvl 112, Black Morass)</td>
+<td><span class="q-epic">Netherblade Shoulderpads</span> (T4 token) OR <span class="q-epic">Wastewalker Shoulderpads</span> (H Auchenai)</td>
+<td>Kara / H Auchenai. Netherblade gives 2pc synergy with your current T4 legs + gloves.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Chest</strong></td>
+<td><span class="q-rare">Chestguard of No Remorse</span> (Hydromancer Thespia, H Steamvault)</td>
+<td><span class="q-epic">Netherblade Breastplate</span> (T4 token)</td>
+<td>Gruul's Lair. The +22 hit on it is wasted (you're overcapped), but raw Agi/AP/Sta + T4 2pc with shoulders is still a gain.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Trinket 2</strong></td>
+<td><span class="q-epic">Bloodlust Brooch</span></td>
+<td><span class="q-epic">Abacus of Violent Odds</span> (on-use haste)</td>
+<td>Pathaleon, Mechanar (normal). Haste on-use stacks with BF + AR burst. Project reference flags Abacus as superior here.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>OH</strong></td>
+<td><span class="q-epic">King's Defender</span> (Chess, Kara — tank sword)</td>
+<td><span class="q-epic">Latro's Shifting Sword</span></td>
+<td>Aeonus, HBM. Itemized for rogue DPS; proccy with Combat Potency thanks to 1.80s speed.</td>
+</tr>
+</tbody>
+</table></div>
+<p>If you land Latro's for MH first, keep an eye out for a second Latro's as OH or grab a <span class="q-epic">Gladiator's Quickblade</span> alternative later. One step at a time.</p>
+<hr>
+<h2>Slots that are fine — don't chase</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Item</th>
+<th>Why it stays</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Head</td>
+<td><span class="q-epic">Malefic Mask of the Shadows</span> + Glyph of Ferocity</td>
+<td>BiS enchant applied.</td>
+</tr>
+<tr>
+<td>Neck</td>
+<td><span class="q-epic">Saberclaw Talisman</span></td>
+<td>+21 Agi, +33 Sta, +46 AP — near-BiS for P1.</td>
+</tr>
+<tr>
+<td>Back</td>
+<td><span class="q-epic">Farstrider Wildercloak</span> + Major Agility</td>
+<td>BiS enchant applied.</td>
+</tr>
+<tr>
+<td>Ring 1</td>
+<td><span class="q-epic">Violet Signet of the Master Assassin</span></td>
+<td>Fully-upgraded questline ring. Hit rating is wasted but raw AP beats alternatives.</td>
+</tr>
+<tr>
+<td>Ring 2</td>
+<td><span class="q-epic">Slayer's Mark of the Redemption</span></td>
+<td>Scryer questline ring — solid.</td>
+</tr>
+<tr>
+<td>Trinket 1</td>
+<td><span class="q-epic">Bladefist's Breadth</span></td>
+<td>Strong passive AP trinket.</td>
+</tr>
+<tr>
+<td>Legs</td>
+<td><span class="q-epic">Netherblade Breeches</span> + Nethercobra Leg Armor</td>
+<td>BiS leg enchant applied.</td>
+</tr>
+<tr>
+<td>Feet</td>
+<td><span class="q-epic">Zierhut's Lost Treads</span></td>
+<td>+34 Str / +28 Agi / +33 Sta / 390 armor — solid once enchanted.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2>Hit cap note</h2>
+<p>You are at <strong>188 hit rating / 11.92%</strong>, vs. the 63-rating yellow-cap. That's ~125 rating of dead stat. Not a fix — just context. When evaluating future upgrades, mentally discount any <code>+hit</code> value to zero. Netherblade Breastplate's +22 hit, Violet Signet's +25 hit, Bladefist's Breadth's hit — all overcap. If you see a replacement with equivalent AP/Agi but no hit, take it.</p>
+<hr>
+<h2>Data-quality note (pipeline feedback)</h2>
+<p><strong>Melee Crit reports 0.0%</strong> in the self-scanned stats block. With 498 Agi (≈20% crit from agility alone) plus crit rating from shoulders/legs/chest, you should be sitting around 22–25% self-buffed. The addon likely isn't capturing <code>GetCritChance()</code> correctly, or the scan happened in a state where the UI hadn't populated yet. Doesn't affect any recommendation here — flag for the addon chat.</p>
+<hr>
+<h2>Action list (ordered by impact × ease)</h2>
+<ul class="task-list clean">
+  <li class="task done">Apply <span class="q-enchant">Enchant Ring — Stats</span> to both rings (self, tonight)</li>
+  <li class="task done">Apply <span class="q-enchant">Enchant Chest — Exceptional Stats</span> to replace the leveling <code>+15 Health</code></li>
+  <li class="task done">Apply <span class="q-enchant">Enchant Boots — Dexterity</span> to Zierhut's</li>
+  <li class="task done">Socket 2× <span class="q-rare">Delicate Crimson Spinel</span> into Gronn-Stitched Girdle</li>
+  <li class="task done">Apply <span class="q-enchant">Enchant Bracer — Assault</span> (+24 AP)</li>
+  <li class="task done">Apply <span class="q-enchant">Enchant Gloves — Superior Agility</span> (+15 Agi)</li>
+  <li class="task todo">Farm Heroic Black Morass for <span class="q-epic">Latro's Shifting Sword</span> → swap to MH → reapply Mongoose</li>
+  <li class="task todo">Push Scryer rep to Exalted for <span class="q-enchant">Greater Inscription of the Blade</span></li>
+  <li class="task todo">Prio <span class="q-epic">Spiteblade</span> on Netherspite clears</li>
+</ul>
+
+<p>Items 1–6 are all enchanter-self-applied and can be done in one evening for mat cost. That alone is probably <strong>~80–120 DPS</strong> before any gear swap. Getting a sword into MH is the ceiling unlock.</p>
+<hr>
+<p><em>Data source: <code>summary_2026-04-20T132113.md</code>, self-scanned.</em></p><footer class="site-foot">
+  <span>Generated 2026-04-20 16:38 UTC</span>
+  <span>TBC Classic · Phase 1</span>
+</footer>
+</div>
+</body>
+</html>
