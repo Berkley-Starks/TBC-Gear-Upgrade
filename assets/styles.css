@@ -415,6 +415,34 @@ blockquote strong { color: var(--gold); }
 .q-artifact  { color: var(--q-artifact); }
 .q-enchant   { color: var(--q-enchant); font-family: var(--ff-mono); font-size: 0.95em; }
 
+/* When a quality tag is rendered as a link (has an ID → wowhead), use a
+   dotted underline in the item's own color so it's obviously clickable but
+   stays subordinate to the color-coded text. */
+a.q-poor, a.q-common, a.q-uncommon, a.q-rare,
+a.q-epic, a.q-legendary, a.q-artifact, a.q-enchant {
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+  opacity: 0.9;
+  transition: opacity 0.15s;
+}
+
+a.q-poor:hover, a.q-common:hover, a.q-uncommon:hover, a.q-rare:hover,
+a.q-epic:hover, a.q-legendary:hover, a.q-artifact:hover, a.q-enchant:hover {
+  opacity: 1;
+  border-bottom-style: solid;
+}
+
+/* Beat the generic a:hover rule (which would turn the link gold). Each class
+   pins its color on hover to its quality color. */
+a.q-poor:hover      { color: var(--q-poor); }
+a.q-common:hover    { color: var(--q-common); }
+a.q-uncommon:hover  { color: var(--q-uncommon); }
+a.q-rare:hover      { color: var(--q-rare); }
+a.q-epic:hover      { color: var(--q-epic); }
+a.q-legendary:hover { color: var(--q-legendary); }
+a.q-artifact:hover  { color: var(--q-artifact); }
+a.q-enchant:hover   { color: var(--q-enchant); }
+
 /* "Headline finding" callout block — if used via admonition syntax later */
 
 .admonition {

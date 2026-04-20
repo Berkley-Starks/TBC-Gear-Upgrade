@@ -142,13 +142,45 @@ def discover_reports() -> list[Report]:
 # --------------------------------------------------------------------------- #
 
 def _quality_sub(text: str) -> str:
-    """[epic]foo[/epic] → <span class="q-epic">foo</span> (inline HTML)."""
+    """
+    Convert WoW item-quality tags into colored HTML.
+
+        [epic]Malchazeen[/epic]          → <span class="q-epic">Malchazeen</span>
+        [epic:28729]Spiteblade[/epic]    → <a class="q-epic" href="...wowhead.com/tbc/item=28729"
+                                             data-wowhead="item=28729"
+                                             target="_blank" rel="noopener">Spiteblade</a>
+        [enchant:27927]Stats[/enchant]   → linked anchor to spell=27927
+
+    All quality tags default to item lookups. The `enchant` tag defaults to
+    spell lookups (enchants are spells in WoW's data model).
+    """
+    # Tag family → wowhead object key (for URL + data-wowhead)
+    tag_kind = {q: "item" for q in QUALITIES}
+    tag_kind["enchant"] = "spell"
+
     for q in QUALITIES:
-        pat = re.compile(rf"\[{q}\](.+?)\[/{q}\]", re.DOTALL)
-        text = pat.sub(
-            lambda m, qq=q: f'<span class="q-{qq}">{m.group(1)}</span>',
-            text,
+        kind = tag_kind[q]
+        # Pattern matches [q] or [q:ID] forms; ID may be a bare int or a "key=int" frag
+        pat = re.compile(
+            rf"\[{q}(?::([a-z]+=\d+|\d+))?\](.+?)\[/{q}\]",
+            re.DOTALL,
         )
+
+        def _repl(m, qq=q, kk=kind):
+            raw_id = m.group(1)
+            label = m.group(2)
+            if not raw_id:
+                return f'<span class="q-{qq}">{label}</span>'
+            # Normalize ID to a wowhead fragment, e.g. "item=28729"
+            frag = raw_id if "=" in raw_id else f"{kk}={raw_id}"
+            url = f"https://www.wowhead.com/tbc/{frag}"
+            return (
+                f'<a class="q-{qq}" href="{url}" '
+                f'data-wowhead="{frag}" target="_blank" rel="noopener">'
+                f'{label}</a>'
+            )
+
+        text = pat.sub(_repl, text)
     return text
 
 
@@ -284,6 +316,8 @@ HEAD_COMMON = """\
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{css}">
 <meta name="color-scheme" content="dark">
+<script>const whTooltips = {{colorLinks: false, iconizeLinks: false, renameLinks: false}};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
 </head>
 <body>
 <div class="shell{extra_class}">
