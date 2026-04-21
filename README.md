@@ -1,17 +1,14 @@
 # Pel's Raid Audit — Codex
 
-A static site for hosting weekly raid-audit reports so you can share single URLs like `username.github.io/repo/pelarogue/2026-04-20/` with raid members.
-
----
+A static site for hosting weekly raid-audit reports so you can share single URLs like `username.github.io/repo/pelarogue/2026-04-21/` with raid members.
 
 ## What you get
 
 - **Clean URLs** — `/<character>/<date>/` resolves to a full audit page; `/<character>/` lists every report for that character; `/` lists every character.
-- **Dark grimoire aesthetic** — Fraunces display serif + IBM Plex body/mono. WoW item-quality coloring on item names ([epic]purple[/epic], [rare]blue[/rare], etc.).
+- **Dark grimoire aesthetic** — Fraunces display serif + IBM Plex body/mono. WoW item-quality coloring on item names (`[epic]purple[/epic]`, `[rare]blue[/rare]`, etc.).
+- **Wowhead integration** — items with IDs (`[epic:28729]Spiteblade[/epic]`) become links with hover tooltips via Wowhead's tooltip script.
 - **Markdown source** — authors drop a `.md` file in `reports/<character>/` and re-run the generator; all HTML pages and indexes rebuild from scratch.
 - **No JS framework, no build step** beyond a single Python script.
-
----
 
 ## Repo structure
 
@@ -22,22 +19,20 @@ A static site for hosting weekly raid-audit reports so you can share single URLs
 │   └── styles.css               ← the whole theme
 ├── reports/
 │   ├── pelarogue/
-│   │   └── 2026-04-20.md        ← author-edited markdown source
-│   └── deucepolo/
-│       └── (empty)
+│   │   └── 2026-04-21.md        ← author-edited markdown source
+│   ├── deucepolo/
+│   │   └── 2026-04-21.md
+│   └── ... (one folder per character)
 │
 ├── index.html                   ← (generated) character picker
 ├── pelarogue/
 │   ├── index.html               ← (generated) pelarogue's report list
-│   └── 2026-04-20/
+│   └── 2026-04-21/
 │       └── index.html           ← (generated) the report
-└── deucepolo/
-    └── index.html               ← (generated)
+└── ...
 ```
 
 Everything outside `reports/` and `assets/` is generated. Don't hand-edit the generated HTML.
-
----
 
 ## GitHub Pages setup (one time)
 
@@ -46,15 +41,14 @@ Everything outside `reports/` and `assets/` is generated. Don't hand-edit the ge
 3. In the repo, go to **Settings → Pages**.
 4. Under **Source**, select `Deploy from a branch`.
 5. Set **Branch** to `main` and **Folder** to `/ (root)`. Save.
-6. Wait 30-60 seconds. Your site will be live at:
+6. Wait 30–60 seconds. Your site will be live at:
    `https://<your-username>.github.io/<repo-name>/`
 
 Example URLs once deployed:
+
 - Root: `https://pelsguild.github.io/raid-audit/`
 - Pelarogue's reports: `https://pelsguild.github.io/raid-audit/pelarogue/`
-- Today's audit: `https://pelsguild.github.io/raid-audit/pelarogue/2026-04-20/`
-
----
+- This week's audit: `https://pelsguild.github.io/raid-audit/pelarogue/2026-04-21/`
 
 ## Adding a new report
 
@@ -73,10 +67,17 @@ Example URLs once deployed:
    ---
    ```
 
-   The `title` becomes the page `<h1>`. All other keys become the metadata strip under it. If you include `title`, don't also write a `# Heading` at the top of the body — the generator will strip one for you, but it's tidier not to duplicate.
+   The `title` becomes the page `<h1>`. All other keys become the metadata strip under it. If you include `title`, don't also write a `# Heading` at the top of the body — the generator will strip one for you.
 
-3. Write the body in regular markdown. Tables, lists, code fences, blockquotes all work.
-4. Commit and push:
+3. Write the body in regular markdown.
+4. Run:
+
+   ```bash
+   pip install markdown              # one time
+   python generate.py
+   ```
+
+5. Commit and push:
 
    ```bash
    git add .
@@ -84,25 +85,13 @@ Example URLs once deployed:
    git push
    ```
 
-   The included GitHub Actions workflow at `.github/workflows/pages.yml` automatically rebuilds the site and commits the generated HTML back. No need to run the generator locally — though you can if you want to preview.
-
-## Running the generator manually (optional)
-
-If you want to preview before pushing, or want to skip the Actions workflow:
-
-```bash
-pip install markdown              # one time
-python generate.py                # regenerates all HTML from reports/
-python -m http.server 8000        # preview at http://localhost:8000
-```
-
----
+   GitHub Pages redeploys automatically.
 
 ## Markdown conventions for audits
 
 ### WoW item quality coloring + Wowhead links
 
-Wrap item/enchant names in quality tags so they render in the right color. Add a numeric ID after the colon to link to Wowhead (with hover tooltips):
+Wrap item/enchant names in quality tags so they render in the right color. Add a numeric ID after the colon to link the item to Wowhead (with hover tooltips):
 
 ```markdown
 [epic:28729]Spiteblade[/epic]              → purple, linked to wowhead.com/tbc/item=28729
@@ -116,7 +105,7 @@ Wrap item/enchant names in quality tags so they render in the right color. Add a
 
 All quality tags default to item lookups. The `[enchant]` tag defaults to spell lookups (enchants are spells in WoW's data model). Hovering any linked item on the live page shows Wowhead's tooltip card; clicking opens Wowhead in a new tab.
 
-Dropping the `:ID` is always safe — the item renders as a colored span without a link. Useful when you don't know the ID offhand.
+Dropping the `:ID` is always safe — the item renders as a colored span without a link.
 
 ### Task lists
 
@@ -129,7 +118,7 @@ GitHub-flavored task list items become rendered checkboxes:
 
 ### Admonition callouts
 
-GitHub-style `> [!note]` blockquotes get special styling:
+GitHub-style `> [!kind]` blockquotes get special styling:
 
 ```markdown
 > [!note]
@@ -142,13 +131,11 @@ GitHub-style `> [!note]` blockquotes get special styling:
 > Hard finding.
 ```
 
-Supported kinds: `note`, `tip`, `warning`, `critical`, `good`.
+Supported kinds: `note`, `tip`, `warning`, `critical`, `good`, `important`, `caution`.
 
 ### Regular markdown
 
 Everything else is standard — `#`/`##`/`###` headers, `**bold**`, `_italic_`, `` `code` ``, pipe-tables, `-` bullet lists, `1.` numbered lists, `> blockquote`, `---` horizontal rule, `[link text](url)`.
-
----
 
 ## Local preview
 
@@ -160,8 +147,6 @@ python -m http.server 8000
 # open http://localhost:8000
 ```
 
----
-
 ## Adding a new character
 
 Just add a directory under `reports/`:
@@ -172,15 +157,9 @@ mkdir reports/newalt
 python generate.py
 ```
 
-The character appears on the root index automatically. Characters with zero reports show as "no reports yet" placeholders — that's fine, they'll populate once you drop markdown in.
-
----
-
 ## Regenerating from scratch
 
 `generate.py` always clears and rewrites the generated directories (`<character>/` and the root `index.html`). It never touches `reports/` or `assets/`. If something breaks, delete the generated HTML dirs and re-run — nothing is lost.
-
----
 
 ## Dependencies
 

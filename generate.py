@@ -16,12 +16,12 @@ Markdown conventions:
       Recognized keys: title, date, character, realm, spec, faction,
       professions. Everything else is passed through as meta rows.
     - WoW item/enchant coloring uses inline tags:
-        [epic]Spiteblade[/epic]            → purple
-        [rare]Sun-Gilded Shouldercaps[/rare] → blue
+        [epic:28729]Spiteblade[/epic]      → purple + Wowhead link + tooltip
+        [rare]Sun-Gilded Shouldercaps[/rare]
         [uncommon]Fel Leather Boots[/uncommon]
         [legendary]Warglaive of Azzinoth[/legendary]
         [common]Instant Poison VII[/common]
-        [enchant]Enchant Gloves — Superior Agility[/enchant] → green
+        [enchant:27984]Mongoose[/enchant]  → green mono + spell= link
     - Task-list checkboxes are supported:
         - [x] done
         - [ ] todo
@@ -36,7 +36,7 @@ import re
 import html
 import shutil
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime
 from dataclasses import dataclass, field
 
 import markdown
@@ -89,6 +89,7 @@ FRONT_MATTER_RE = re.compile(
     re.DOTALL,
 )
 
+
 def parse_front_matter(text: str) -> tuple[dict, str]:
     m = FRONT_MATTER_RE.match(text)
     if not m:
@@ -106,14 +107,11 @@ def parse_front_matter(text: str) -> tuple[dict, str]:
 def load_report(md_path: Path) -> Report:
     raw = md_path.read_text(encoding="utf-8")
     meta, body = parse_front_matter(raw)
-    # derive character + date from path: reports/<char>/<date>.md
     character = md_path.parent.name
     date = md_path.stem
     meta.setdefault("character", character)
     meta.setdefault("date", date)
-    # If front matter supplies a title, strip a leading top-level H1 from the
-    # body so we don't render the same title twice. Only strips an H1 that is
-    # one of the first non-blank lines (i.e. the author's attempt at a title).
+    # Strip leading H1 from body if front matter supplies a title.
     if meta.get("title"):
         body = re.sub(r"\A\s*#\s+[^\n]+\n+", "", body, count=1)
     return Report(
@@ -146,21 +144,16 @@ def _quality_sub(text: str) -> str:
     Convert WoW item-quality tags into colored HTML.
 
         [epic]Malchazeen[/epic]          → <span class="q-epic">Malchazeen</span>
-        [epic:28729]Spiteblade[/epic]    → <a class="q-epic" href="...wowhead.com/tbc/item=28729"
-                                             data-wowhead="item=28729"
-                                             target="_blank" rel="noopener">Spiteblade</a>
+        [epic:28729]Spiteblade[/epic]    → <a class="q-epic" href="wowhead.com/tbc/item=28729"
+                                              data-wowhead="item=28729"
+                                              target="_blank" rel="noopener">Spiteblade</a>
         [enchant:27927]Stats[/enchant]   → linked anchor to spell=27927
-
-    All quality tags default to item lookups. The `enchant` tag defaults to
-    spell lookups (enchants are spells in WoW's data model).
     """
-    # Tag family → wowhead object key (for URL + data-wowhead)
     tag_kind = {q: "item" for q in QUALITIES}
     tag_kind["enchant"] = "spell"
 
     for q in QUALITIES:
         kind = tag_kind[q]
-        # Pattern matches [q] or [q:ID] forms; ID may be a bare int or a "key=int" frag
         pat = re.compile(
             rf"\[{q}(?::([a-z]+=\d+|\d+))?\](.+?)\[/{q}\]",
             re.DOTALL,
@@ -171,7 +164,6 @@ def _quality_sub(text: str) -> str:
             label = m.group(2)
             if not raw_id:
                 return f'<span class="q-{qq}">{label}</span>'
-            # Normalize ID to a wowhead fragment, e.g. "item=28729"
             frag = raw_id if "=" in raw_id else f"{kk}={raw_id}"
             url = f"https://www.wowhead.com/tbc/{frag}"
             return (
@@ -186,12 +178,12 @@ def _quality_sub(text: str) -> str:
 
 _ADMON_TYPES = {"note", "tip", "important", "warning", "caution", "critical", "good"}
 
+
 def _admon_sub(text: str) -> str:
     """
     Collapse GitHub-style admonition blockquotes:
         > [!note] Optional title
         > body
-        > more body
     Into a raw HTML <div class="admonition admonition-note">…</div>.
     """
     lines = text.splitlines(keepends=False)
@@ -206,13 +198,11 @@ def _admon_sub(text: str) -> str:
             body_lines: list[str] = []
             i += 1
             while i < len(lines) and lines[i].startswith(">"):
-                # strip "> " or ">"
                 inner = lines[i][1:]
                 if inner.startswith(" "):
                     inner = inner[1:]
                 body_lines.append(inner)
                 i += 1
-            # Render the body as markdown itself, then emit
             body_html = markdown.markdown(
                 "\n".join(body_lines),
                 extensions=["tables", "fenced_code", "attr_list"],
@@ -232,11 +222,7 @@ def _admon_sub(text: str) -> str:
 def _task_list_sub(text: str) -> str:
     r"""
     Convert GitHub-flavored task list items into raw HTML <li class="task ...">.
-    We also have to close them into an <ul class="task-list">.
-
-    Approach: find runs of lines matching /^\s*- \[[ xX]\] / and replace with
-    a single <ul> block. This lets us keep them out of the markdown parser,
-    which would otherwise turn them into checkbox inputs or nothing.
+    Matches /^\s*- \[[ xX]\] / lines and collects consecutive runs.
     """
     lines = text.splitlines(keepends=False)
     out: list[str] = []
@@ -248,7 +234,6 @@ def _task_list_sub(text: str) -> str:
             out.append(lines[i])
             i += 1
             continue
-        # collect all consecutive task lines
         items: list[tuple[bool, str]] = []
         while i < len(lines):
             mm = task_re.match(lines[i])
@@ -257,14 +242,9 @@ def _task_list_sub(text: str) -> str:
             done = mm.group(2).lower() == "x"
             items.append((done, mm.group(3)))
             i += 1
-        # emit HTML
         out.append('<ul class="task-list clean">')
         for done, body in items:
-            # markdown-render the body inline (allows bold, links, [epic] etc)
-            body_html = markdown.markdown(
-                body, extensions=["attr_list"],
-            )
-            # strip surrounding <p></p> if present
+            body_html = markdown.markdown(body, extensions=["attr_list"])
             body_html = re.sub(r"^<p>(.*)</p>\s*$", r"\1", body_html, flags=re.DOTALL)
             cls = "task done" if done else "task todo"
             out.append(f'  <li class="{cls}">{body_html}</li>')
@@ -283,19 +263,14 @@ def _table_wrap_sub(html_text: str) -> str:
 
 
 def render_body(md_text: str) -> str:
-    # 1. Quality tags (do first — produces inline HTML that markdown will leave alone)
     md_text = _quality_sub(md_text)
-    # 2. Admonitions
     md_text = _admon_sub(md_text)
-    # 3. Task lists → raw HTML blocks
     md_text = _task_list_sub(md_text)
-    # 4. Markdown → HTML
     html_text = markdown.markdown(
         md_text,
         extensions=["tables", "fenced_code", "attr_list", "def_list"],
         output_format="html5",
     )
-    # 5. Post-process: wrap tables for horizontal scroll on mobile
     html_text = _table_wrap_sub(html_text)
     return html_text
 
@@ -351,20 +326,11 @@ def _nav(crumbs: list[tuple[str, str]]) -> str:
 
 
 def _rel_root_from(depth: int) -> str:
-    """Relative path to site root from a file N directories deep."""
     return "../" * depth if depth > 0 else "./"
 
 
-def _css_version() -> str:
-    """Short cache-busting suffix derived from styles.css mtime (or 0 if missing)."""
-    css = ASSETS_DIR / "styles.css"
-    if css.exists():
-        return str(int(css.stat().st_mtime))
-    return "0"
-
-
 def _rel_css(depth: int) -> str:
-    return f"{_rel_root_from(depth)}assets/styles.css?v={_css_version()}"
+    return _rel_root_from(depth) + "assets/styles.css"
 
 
 # --------------------------------------------------------------------------- #
@@ -373,8 +339,8 @@ def _rel_css(depth: int) -> str:
 
 META_KEY_ORDER = ("character", "realm", "spec", "faction", "professions")
 
+
 def _meta_row(meta: dict) -> str:
-    """Render the metadata strip under the report H1."""
     parts = []
     seen = set()
     for k in META_KEY_ORDER:
@@ -387,7 +353,6 @@ def _meta_row(meta: dict) -> str:
             f'<dd class="val-{html.escape(v.lower().split()[0])}">'
             f'{html.escape(str(v))}</dd>'
         )
-    # include any other meta that isn't already shown (skip title/date/raw body hints)
     skip = seen | {"title", "date"}
     for k, v in meta.items():
         if k in skip or not v:
@@ -421,7 +386,7 @@ def render_report(report: Report) -> str:
         f'{meta_html}'
         f'</header>'
     )
-    foot = FOOT_COMMON.format(gen_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
+    foot = FOOT_COMMON.format(gen_time=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"))
     return head + header_html + body_html + foot
 
 
@@ -438,7 +403,6 @@ def render_character_index(character: str, reports: list[Report]) -> str:
         extra_class="",
     )
 
-    # Pull representative meta from most recent report
     latest = reports[-1] if reports else None
     meta_line = ""
     if latest:
@@ -457,7 +421,6 @@ def render_character_index(character: str, reports: list[Report]) -> str:
         body = '<div class="empty-state">No reports yet for this character.</div>'
     else:
         cards = []
-        # newest first
         for r in sorted(reports, key=lambda r: r.date, reverse=True):
             title = r.meta.get("title") or "Audit"
             bits = []
@@ -476,7 +439,7 @@ def render_character_index(character: str, reports: list[Report]) -> str:
             )
         body = '<ul class="card-list clean">' + "".join(cards) + "</ul>"
 
-    foot = FOOT_COMMON.format(gen_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
+    foot = FOOT_COMMON.format(gen_time=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"))
     return head + header + body + foot
 
 
@@ -490,9 +453,10 @@ def render_root_index(characters: dict[str, list[Report]]) -> str:
         extra_class="",
     )
     header = (
-        '<h1 class="index-title">The Codex</h1>'
-        '<p class="index-sub">raid audits · dreamscythe-us</p>'
+        '<h1 class="index-title">Raid Audit Codex</h1>'
+        '<p class="index-sub">Weekly gear audits · Dreamscythe-US · TBC Classic Phase 1</p>'
     )
+
     if not characters:
         body = '<div class="empty-state">No characters with reports yet.</div>'
     else:
@@ -504,25 +468,27 @@ def render_root_index(characters: dict[str, list[Report]]) -> str:
                 bits.append(html.escape(latest.meta["spec"]))
             if latest and latest.meta.get("realm"):
                 bits.append(html.escape(latest.meta["realm"]))
-            count = f"{len(reports)} report" + ("s" if len(reports) != 1 else "")
+            count = f"{len(reports)} report{'s' if len(reports) != 1 else ''}"
             bits.append(count)
-            sub = '<span class="pipe">·</span>'.join(bits)
-            if latest:
-                right = f'<span class="card-date">latest: {html.escape(latest.date)}</span>'
-            else:
-                right = '<span class="card-date">no reports yet</span>'
+            sub = '<span class="pipe">·</span>'.join(bits) if bits else ""
+            latest_date = latest.date if latest else ""
+            date_html = (
+                f'<span class="card-date">latest: {html.escape(latest_date)}</span>'
+                if latest_date
+                else '<span class="card-date">no reports yet</span>'
+            )
             cards.append(
                 f'<li><a class="card" href="{char}/">'
                 f'<div class="card-head">'
                 f'<span class="card-title">{html.escape(char)}</span>'
-                f'{right}'
+                f'{date_html}'
                 f'</div>'
                 f'<div class="card-meta">{sub}</div>'
                 f'</a></li>'
             )
         body = '<ul class="card-list clean">' + "".join(cards) + "</ul>"
 
-    foot = FOOT_COMMON.format(gen_time=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
+    foot = FOOT_COMMON.format(gen_time=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"))
     return head + header + body + foot
 
 
@@ -531,12 +497,11 @@ def render_root_index(characters: dict[str, list[Report]]) -> str:
 # --------------------------------------------------------------------------- #
 
 def clean_generated(characters: list[str]) -> None:
-    """Remove previously-generated <char>/ directories so stale files don't linger."""
+    """Wipe old generated character dirs and root index."""
     for char in characters:
         d = ROOT / char
         if d.exists() and d.is_dir():
             shutil.rmtree(d)
-    # Remove old root index
     idx = ROOT / "index.html"
     if idx.exists():
         idx.unlink()
@@ -548,32 +513,28 @@ def build() -> None:
     for r in reports:
         by_char.setdefault(r.character, []).append(r)
 
-    # Also ensure characters with no reports show up if reports/<char>/ exists
+    # Include empty character dirs too
     for char_dir in (REPORTS_DIR.iterdir() if REPORTS_DIR.exists() else []):
         if char_dir.is_dir():
             by_char.setdefault(char_dir.name, [])
 
     clean_generated(list(by_char.keys()))
 
-    # Report pages
     for r in reports:
         r.out_path.parent.mkdir(parents=True, exist_ok=True)
         r.out_path.write_text(render_report(r), encoding="utf-8")
         print(f"  wrote {r.out_path.relative_to(ROOT)}")
 
-    # Character indexes
     for char, rs in by_char.items():
         path = ROOT / char / "index.html"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(render_character_index(char, rs), encoding="utf-8")
         print(f"  wrote {path.relative_to(ROOT)}")
 
-    # Root index
     root_idx = ROOT / "index.html"
     root_idx.write_text(render_root_index(by_char), encoding="utf-8")
     print(f"  wrote {root_idx.relative_to(ROOT)}")
 
-    # Sanity-check assets exist
     if not (ASSETS_DIR / "styles.css").exists():
         print("  WARN: assets/styles.css missing")
 

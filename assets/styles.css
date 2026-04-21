@@ -39,7 +39,7 @@
   --q-epic:      #c45dff;
   --q-legendary: #ff8000;
   --q-artifact:  #e6cc80;
-  --q-enchant:   #7bd97b;      /* green inscription/enchant text */
+  --q-enchant:   #7bd97b;
 
   /* Typography */
   --ff-display:  "Fraunces", "IBM Plex Serif", Georgia, serif;
@@ -76,7 +76,6 @@ body {
     linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
   background-attachment: fixed;
   min-height: 100vh;
-  /* subtle noise overlay for parchment feel */
   position: relative;
 }
 
@@ -131,9 +130,7 @@ body::before {
   font-variation-settings: "SOFT" 100, "opsz" 14;
 }
 
-.mast-brand:hover em {
-  color: var(--gold);
-}
+.mast-brand:hover em { color: var(--gold); }
 
 .mast-nav {
   display: flex;
@@ -157,9 +154,7 @@ body::before {
   border-bottom-color: var(--gold);
 }
 
-.mast-nav .crumb-sep {
-  color: var(--border-hi);
-}
+.mast-nav .crumb-sep { color: var(--border-hi); }
 
 /* Typography --------------------------------------------------------------- */
 
@@ -188,13 +183,6 @@ h2 {
   padding-top: 1rem;
   border-top: 1px solid var(--border);
   font-variation-settings: "SOFT" 30;
-}
-
-/* If an hr directly precedes an h2, don't stack borders */
-hr + h2 {
-  border-top: none;
-  padding-top: 0.3rem;
-  margin-top: 1.5rem;
 }
 
 h3 {
@@ -279,9 +267,7 @@ hr::after {
 
 /* Report header (metadata strip) ------------------------------------------ */
 
-.report-head {
-  margin-bottom: 2rem;
-}
+.report-head { margin-bottom: 2rem; }
 
 .report-meta {
   display: flex;
@@ -323,7 +309,7 @@ li { margin: 0.3em 0; }
 
 ul.clean { list-style: none; padding: 0; }
 
-/* Task list (preprocessed from markdown checkboxes) */
+/* Task list */
 li.task {
   list-style: none;
   position: relative;
@@ -338,14 +324,8 @@ li.task::before {
   width: 1.2em;
   text-align: center;
 }
-li.task.done::before {
-  content: "▣";
-  color: var(--good);
-}
-li.task.todo::before {
-  content: "□";
-  color: var(--text-dim);
-}
+li.task.done::before { content: "▣"; color: var(--good); }
+li.task.todo::before { content: "□"; color: var(--text-dim); }
 li.task.done { color: var(--text-mute); }
 
 /* Tables ------------------------------------------------------------------- */
@@ -415,9 +395,7 @@ blockquote strong { color: var(--gold); }
 .q-artifact  { color: var(--q-artifact); }
 .q-enchant   { color: var(--q-enchant); font-family: var(--ff-mono); font-size: 0.95em; }
 
-/* When a quality tag is rendered as a link (has an ID → wowhead), use a
-   dotted underline in the item's own color so it's obviously clickable but
-   stays subordinate to the color-coded text. */
+/* Quality links keep their WoW color on hover */
 a.q-poor, a.q-common, a.q-uncommon, a.q-rare,
 a.q-epic, a.q-legendary, a.q-artifact, a.q-enchant {
   text-decoration: none;
@@ -432,8 +410,6 @@ a.q-epic:hover, a.q-legendary:hover, a.q-artifact:hover, a.q-enchant:hover {
   border-bottom-style: solid;
 }
 
-/* Beat the generic a:hover rule (which would turn the link gold). Each class
-   pins its color on hover to its quality color. */
 a.q-poor:hover      { color: var(--q-poor); }
 a.q-common:hover    { color: var(--q-common); }
 a.q-uncommon:hover  { color: var(--q-uncommon); }
@@ -443,7 +419,7 @@ a.q-legendary:hover { color: var(--q-legendary); }
 a.q-artifact:hover  { color: var(--q-artifact); }
 a.q-enchant:hover   { color: var(--q-enchant); }
 
-/* "Headline finding" callout block — if used via admonition syntax later */
+/* Admonition callouts ----------------------------------------------------- */
 
 .admonition {
   margin: 1.5rem 0;
@@ -456,6 +432,9 @@ a.q-enchant:hover   { color: var(--q-enchant); }
 .admonition-warning  { border-left-color: var(--warning); }
 .admonition-note     { border-left-color: var(--violet); }
 .admonition-good     { border-left-color: var(--good); }
+.admonition-tip      { border-left-color: var(--violet); }
+.admonition-important { border-left-color: var(--gold); }
+.admonition-caution  { border-left-color: var(--warning); }
 .admonition-title {
   font-family: var(--ff-mono);
   font-size: 0.75rem;

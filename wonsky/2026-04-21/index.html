@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>wonsky — 2026-04-21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/styles.css">
+<meta name="color-scheme" content="dark">
+<script>const whTooltips = {colorLinks: false, iconizeLinks: false, renameLinks: false};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
+</head>
+<body>
+<div class="shell">
+<header class="mast">
+  <a class="mast-brand" href="../../index.html">Pel's Raid Audit <em>codex</em></a>
+  <nav class="mast-nav"><a href="../../index.html">all characters</a><span class="crumb-sep">/</span><a href="../index.html">wonsky</a><span class="crumb-sep">/</span><span>2026-04-21</span></nav>
+</header>
+<header class="report-head"><h1>Weekly Gear Audit — Priest (spec mismatch check)</h1><dl class="report-meta"><dt>character</dt><dd class="val-wonsky">Wonsky</dd><dt>realm</dt><dd class="val-dreamscythe-us">Dreamscythe-US</dd><dt>spec</dt><dd class="val-41/20/0">41/20/0 — scan says Shadow, gear is Healer</dd></dl></header><div class="admonition admonition-warning"><div class="admonition-title">Spec check</div><p>Your talent distribution is <strong>41 Shadow / 20 Disc / 0 Holy</strong>, which is a <strong>Shadow Priest build</strong> (Shadowform + Vampiric Touch + Mind Flay). But your gear is <strong>full Incarnate healer set</strong> with <a class="q-epic" href="https://www.wowhead.com/tbc/item=29175" data-wowhead="item=29175" target="_blank" rel="noopener">Gavel of Pure Light</a> (+81 healing MH enchant) and <a class="q-epic" href="https://www.wowhead.com/tbc/item=28190" data-wowhead="item=28190" target="_blank" rel="noopener">Scarab of the Infinite Cycle</a> (healing trinket).</p>
+<p><strong>Which is it?</strong></p>
+<ul>
+<li>If you're Shadow: your gear is completely wrong and you need a dedicated Shadow set (Spellstrike + Incanter's + Black Duke's Bow etc.).</li>
+<li>If you're Disc/Holy healing: your talents need re-allocation (reset to 23/38/0 Disc/Holy or 0/41/20 Holy/Disc).</li>
+</ul>
+<p><strong>All recommendations below assume you're actually a healer</strong> (either Disc or Holy) and the talent scan is wrong or you respecced recently.</p></div>
+
+<h2>TL;DR</h2>
+<p>Missing <strong>4 enchants</strong> and <strong>6 socket bonuses are inactive</strong> from mismatched gem colors. The socket bonuses are polish (~20 healing total). The missing enchants are the real leak.</p>
+<h2>Priority 1: Fix 4 missing enchants</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Enchant</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wrist</td>
+<td><span class="q-enchant">Superior Healing</span> (+30 healing) or <span class="q-enchant">Major Intellect</span> (+12 Int)</td>
+<td>Enchanter</td>
+</tr>
+<tr>
+<td>Feet</td>
+<td><span class="q-enchant">Boar's Speed</span> (+9 Sta / 8% speed)</td>
+<td>Enchanter</td>
+</tr>
+<tr>
+<td>Chest</td>
+<td><a class="q-enchant" href="https://www.wowhead.com/tbc/spell=2661" data-wowhead="spell=2661" target="_blank" rel="noopener">Exceptional Stats</a> (+6 all)</td>
+<td>Enchanter</td>
+</tr>
+<tr>
+<td>Back</td>
+<td><span class="q-enchant">Subtlety</span> (-2% threat)</td>
+<td>Enchanter</td>
+</tr>
+</tbody>
+</table></div>
+<p>Your head (<a class="q-enchant" href="https://www.wowhead.com/tbc/spell=3001" data-wowhead="spell=3001" target="_blank" rel="noopener">Glyph of the Renewing Nightmare</a> +35 healing/+12 SD/+7 mp5), shoulders (<a class="q-enchant" href="https://www.wowhead.com/tbc/spell=2979" data-wowhead="spell=2979" target="_blank" rel="noopener">Greater Inscription of the Orb</a> +29 healing/+10 SD), hands (<a class="q-enchant" href="https://www.wowhead.com/tbc/spell=2322" data-wowhead="spell=2322" target="_blank" rel="noopener">Healing</a> +35 healing/+12 SD), legs (<a class="q-enchant" href="https://www.wowhead.com/tbc/spell=2746" data-wowhead="spell=2746" target="_blank" rel="noopener">Golden Spellthread</a> +66 healing/+22 SD/+20 Sta), MH (<a class="q-enchant" href="https://www.wowhead.com/tbc/spell=2343" data-wowhead="spell=2343" target="_blank" rel="noopener">Major Healing</a> +81 healing/+27 SD) are all <strong>correct and best-in-slot for healer</strong>. Keep.</p>
+<h2>Priority 2: Fix inactive socket bonuses</h2>
+<p>You have 6 inactive socket bonuses — all from using pure red gems (<span class="q-epic">Teardrop Living Ruby</span>) when the socket layouts need color matches:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Current Gems</th>
+<th>Issue</th>
+<th>Fix for Bonus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Legs</td>
+<td><span class="q-epic">Teardrop × 3</span></td>
+<td>Needs yellow/blue for +4 Spirit</td>
+<td>Swap one Teardrop → <span class="q-epic">Dazzling Talasite</span> (+6 healing/+5 Int, blue) or similar hybrid blue gem</td>
+</tr>
+<tr>
+<td>Hands</td>
+<td>—</td>
+<td>+7 healing/+3 SD bonus inactive</td>
+<td>Match socket colors</td>
+</tr>
+<tr>
+<td>Wrist</td>
+<td>—</td>
+<td>+3 Sta bonus inactive</td>
+<td>Match socket colors</td>
+</tr>
+<tr>
+<td>Head</td>
+<td>—</td>
+<td>+9 healing/+3 SD bonus inactive</td>
+<td>Match socket colors</td>
+</tr>
+<tr>
+<td>Chest</td>
+<td><span class="q-epic">Teardrop × 3</span></td>
+<td>+4 Int bonus inactive</td>
+<td>Swap one Teardrop → blue or yellow hybrid</td>
+</tr>
+<tr>
+<td>Shoulders</td>
+<td>—</td>
+<td>+3 Int bonus inactive</td>
+<td>Match socket colors</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Realistically:</strong> most socket bonuses are only worth activating when the bonus is ≥ the stat difference between a hybrid gem and a pure red. For healer, <span class="q-epic">Teardrop Living Ruby</span> (+9 healing) vs <span class="q-epic">Dazzling Talasite</span> (+6 healing/+5 Int) is nearly a wash — activate bonuses in slots where the bonus is clearly better (e.g., <strong>head +9 healing bonus</strong> is easily worth 1 hybrid gem swap; rest are marginal).</p>
+<h2>What's already excellent</h2>
+<ul>
+<li>Chest (<a class="q-epic" href="https://www.wowhead.com/tbc/item=29050" data-wowhead="item=29050" target="_blank" rel="noopener">Robes of the Incarnate</a> + 3× Teardrop) — full red Ruby fill for max healing throughput, near-BiS gemming approach.</li>
+<li>Trinkets: <a class="q-epic" href="https://www.wowhead.com/tbc/item=28590" data-wowhead="item=28590" target="_blank" rel="noopener">Ribbon of Sacrifice</a> + <a class="q-epic" href="https://www.wowhead.com/tbc/item=28190" data-wowhead="item=28190" target="_blank" rel="noopener">Scarab of the Infinite Cycle</a> — both solid P1 healer trinkets.</li>
+<li>MH + OH + head + shoulders + neck (<a class="q-epic" href="https://www.wowhead.com/tbc/item=28822" data-wowhead="item=28822" target="_blank" rel="noopener">Teeth of Gruul</a>) — all top-tier.</li>
+</ul>
+<h2>#1 gear upgrade</h2>
+<p>Honestly, nothing's critical. If you want one marginal upgrade:</p>
+<ul>
+<li><span class="q-epic">Band of Divine Infusion</span> (Heroic Mechanar, Pathaleon) — +23 healing / +6 mp5 ring. Minor upgrade over <a class="q-epic" href="https://www.wowhead.com/tbc/item=28763" data-wowhead="item=28763" target="_blank" rel="noopener">Jade Ring of the Everliving</a>.</li>
+</ul>
+<p>Your gear is near-BiS for P1 Disc/Holy. Focus on <strong>respecing</strong> (if the talent scan is accurate) and <strong>enchants</strong> above gear.</p>
+<h2>Action list</h2>
+<ul class="task-list clean">
+  <li class="task todo"><strong>Confirm spec in-game</strong> — talents should be Disc/Holy, not Shadow, given healer gear</li>
+  <li class="task todo">Enchant wrist, feet, chest, back</li>
+  <li class="task todo">Optional: swap one head gem → hybrid blue to activate +9 healing bonus</li>
+</ul>
+
+<hr>
+<p><em>Data source: <code>summary_2026-04-21T011548.md</code>, inspection-estimated.</em></p><footer class="site-foot">
+  <span>Generated 2026-04-21 03:34 UTC</span>
+  <span>TBC Classic · Phase 1</span>
+</footer>
+</div>
+</body>
+</html>
